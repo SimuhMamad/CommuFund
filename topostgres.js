@@ -3,15 +3,19 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
 const port = 3000
+require('dotenv').config()
 
 const Pool = require('pg').Pool
 const pool = new Pool({
-  user: 'me',
-  host: 'localhost',
-  database: 'CommuFund',
-  password: 'password',
-  port: 5432,
+  connectionString: process.env.POSTGRES_URL ,
 })
+// const pool = new Pool({
+//   user: 'me',
+//   host: 'localhost',
+//   database: 'CommuFund',
+//   password: 'password',
+//   port: 5432,
+// })
 
 app.use(bodyParser.json())
 app.use(
@@ -19,6 +23,11 @@ app.use(
     extended: true,
   })
 )
+
+pool.connect((err) => {
+  if (err) throw err
+  console.log("Connect to PostgreSQL sucsessfully")
+})
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/login.html');

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+  </head>
+  <body>
+    <main>
+      <form id="loginForm">
+        <input 
+            type="text" 
+            name="username" 
+            id="username" 
+            placeholder="Username" 
+            required />
+        <input
+          type="password"
+          name="password"
+          id="password"
+          placeholder="Password"
+          required
+        />
+        <h1 id="tes">p</h1>
+        <button type="button" onclick="buttonLogin()">Login</button>
+        <button type="button" onclick="toRegis()">Registrasi</button>
+      </form>
+    </main> 
+    <script> 
+        const h1 = document.getElementById('tes');
+
+        function toRegis() {
+            window.location.replace("/registrasi.html")
+            // fetch('/switch')
+        }
+
+        function buttonLogin() {
+          const username = document.getElementById('username').value;
+          const password = document.getElementById('password').value;
+
+          fetch('/postPass'
+          , {
+            method : 'POST',
+            headers : {
+              "Content-Type" : "application/json"
+            },
+            body : JSON.stringify({
+              username,
+              password
+            })
+          }
+          )
+            .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+            })
+            .then(data => {
+              if (data.text === 'success') {
+                h1.textContent = "Logged in successfully";
+                // Handle successful login (e.g., redirect to another page)
+                
+              } else {
+                alert(data.error || 'Login failed');
+                h1.textContent = "Login Failed";
+              }
+            })
+            .catch(error => {
+            console.error('Error fetching data:', error);
+            h1.textContent = 'Error: Could not fetch data';
+            });
+        }
+    </script>
+  </body>
+</html>

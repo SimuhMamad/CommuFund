@@ -33,7 +33,7 @@ pool.connect((err) => {
 //   res.sendFile(__dirname + '/login.html');
 // });
 
-app.get('/', (request, response) => {
+app.get('/', async(request, response) => {
   response.json({ info: 'Node.js, Express, and Postgres API' })
 })
 

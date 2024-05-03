@@ -29,9 +29,13 @@ pool.connect((err) => {
   console.log("Connect to PostgreSQL sucsessfully")
 })
 
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/login.html');
-});
+// app.get('/', (req, res) => {
+//   res.sendFile(__dirname + '/login.html');
+// });
+
+app.get('/', (request, response) => {
+  response.json({ info: 'Node.js, Express, and Postgres API' })
+})
 
 app.post('/postPass', async (request, response) => {
   try {
